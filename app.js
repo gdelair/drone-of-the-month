@@ -1,6 +1,7 @@
 // Global variables for Audio
 let droneSynth, melodySynth, melodyLoop, droneSequence;
-let currentTrack = 'april';
+let currentTrack = 'january2026';
+let currentMelodyNotes = [];
 let audioInitialized = false;
 let trackAdvanceTimerId = null;
 let reverb, delay; // Audio Effects
@@ -76,7 +77,11 @@ const tracks = {
     },
     december: { // New Track: Deep winter minor - Dark Cyan Octahedron, 12 segments, slow pulse
         key: 'F#', scale: 'minor', droneOctave: 2, melodyOctave: 3, melodyLoopInterval: '2m', droneSequencePattern: [0, 4], droneSequenceInterval: '6m', reverbWet: 0.8, melodyProb: 0.5,
-        segments: 14, geometryType: 'TorusKnot', materialType: 'MeshPhong', objectColor: 0x2a8f83, wireframe: false, rotationSpeedX: 0.002, rotationSpeedY: 0.002, groupRotationZ: 0.0002 
+        segments: 14, geometryType: 'TorusKnot', materialType: 'MeshPhong', objectColor: 0x2a8f83, wireframe: false, rotationSpeedX: 0.002, rotationSpeedY: 0.002, groupRotationZ: 0.0002
+    },
+    january2026: { // January 2026: Return to calm, foundational beginning - Blue Icosahedron, 6 segments
+        key: 'C', scale: 'major', droneOctave: 2, melodyOctave: 4, melodyLoopInterval: '1m', droneSequencePattern: [0, 4], droneSequenceInterval: '4m', reverbWet: 0.9, melodyProb: 0.6,
+        segments: 6, geometryType: 'Icosahedron', materialType: 'MeshPhong', objectColor: 0x6ab0f3, wireframe: true, rotationSpeedX: 0.005, rotationSpeedY: 0.003, groupRotationZ: 0.0005
     }
 };
 
@@ -175,9 +180,10 @@ function createKaleidoscopeSegments(params) {
         case 'Sphere': geometry = new THREE.SphereGeometry(0.8, 32, 16); break;
         case 'Torus': geometry = new THREE.TorusGeometry(0.6, 0.2, 16, 100); break;
         case 'TorusKnot': geometry = new THREE.TorusKnotGeometry(0.6, 0.15, 100, 16); break;
+        case 'Octahedron': geometry = new THREE.OctahedronGeometry(0.8); break;
         case 'Dodecahedron': geometry = new THREE.DodecahedronGeometry(0.9); break;
         case 'Tetrahedron': geometry = new THREE.TetrahedronGeometry(1); break;
-        case 'Icosahedron': 
+        case 'Icosahedron':
         default: geometry = new THREE.IcosahedronGeometry(0.8); break;
     }
 
