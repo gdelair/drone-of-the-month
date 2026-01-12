@@ -1,0 +1,334 @@
+:root {
+    /* Light Theme Colors */
+    --bg-color-light: #f0f0f0;
+    --text-color-light: #333;
+    --canvas-bg-light: #ffffff;
+    --controls-bg-light: rgba(255, 255, 255, 0.9);
+    --shadow-color-light: rgba(0, 0, 0, 0.1);
+    --select-bg-light: white;
+    --select-border-light: #ccc;
+    --select-focus-border-light: #66afe9;
+
+    /* Dark Theme Colors */
+    --bg-color-dark: #222;
+    --text-color-dark: #e0e0e0;
+    --canvas-bg-dark: #111;
+    --controls-bg-dark: rgba(40, 40, 40, 0.9);
+    --shadow-color-dark: rgba(255, 255, 255, 0.1);
+    --select-bg-dark: #444;
+    --select-border-dark: #666;
+    --select-focus-border-dark: #aaa;
+}
+
+body {
+    /* Default to dark theme variables */
+    background-color: var(--bg-color-dark);
+    color: var(--text-color-dark);
+
+    /* Existing styles */
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden; /* Hide scrollbars */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Light theme override */
+body:not(.dark) {
+    background-color: var(--bg-color-light);
+    color: var(--text-color-light);
+}
+
+#canvas-container {
+    /* Default to dark */
+    background-color: var(--canvas-bg-dark);
+    box-shadow: 0 4px 8px var(--shadow-color-dark);
+
+    /* Existing styles */
+    width: 100%;
+    height: 100vh; /* Take full viewport height initially */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    position: relative; /* Needed for absolute positioning of button */
+}
+
+/* Light theme override */
+body:not(.dark) #canvas-container {
+    background-color: var(--canvas-bg-light);
+    box-shadow: 0 4px 8px var(--shadow-color-light);
+}
+
+#main-title {
+    position: absolute;
+    top: calc(50% - 70px); /* Position above the play button */
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; /* Explicit sans-serif */
+    font-size: 2.77em; /* Adjust size as needed */
+    color: inherit; /* Inherit color from body */
+    margin: 0 0 20px 0;
+    padding: 0;
+    z-index: 20; /* Same as play button */
+    transition: opacity 1s ease;
+    opacity: 1;
+    text-align: center;
+}
+
+#play-button {
+    position: absolute;
+    top: 53%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 15px 30px;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, opacity 0.5s ease;
+    z-index: 20; /* Ensure button is above canvas */
+    opacity: 1;
+}
+
+#play-button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+#play-button.hidden {
+    opacity: 0;
+    pointer-events: none; /* Disable clicks when hidden */
+}
+
+/* Hide title when play button is hidden */
+#play-button.hidden + #main-title, /* Use adjacent sibling selector if title comes after button */
+/* OR if title comes before button: */
+#main-title.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Adjust canvas container height when controls are visible */
+body.playing #canvas-container {
+    height: calc(100vh - 60px); /* Or adjust based on control height */
+}
+
+/* Adjust control height for smaller screens when visible */
+body.playing .controls {
+   display: flex; /* Show controls */
+}
+
+@media (max-width: 600px) {
+    body.playing #canvas-container {
+        height: calc(100vh - 150px); /* Adjust height for taller controls */
+    }
+}
+
+canvas {
+    display: block; /* Removes bottom space under canvas */
+}
+
+.controls {
+    /* Default to dark */
+    background-color: var(--controls-bg-dark);
+    box-shadow: 0 -2px 5px var(--shadow-color-dark);
+
+    /* Existing styles */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 20px;
+    display: none; /* Initially hidden, shown by body.playing */
+    justify-content: center; /* Distribute items */
+    align-items: center;
+    gap: 20px;
+    z-index: 10;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Light theme override */
+body:not(.dark) .controls {
+    background-color: var(--controls-bg-light);
+    box-shadow: 0 -2px 5px var(--shadow-color-light);
+}
+
+.controls label {
+    font-weight: 500;
+}
+
+.controls select {
+    /* Default to dark */
+    background-color: var(--select-bg-dark);
+    border: 1px solid var(--select-border-dark);
+    color: inherit; /* Inherit text color from body */
+
+    /* Existing styles */
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+/* Light theme override */
+body:not(.dark) .controls select {
+    background-color: var(--select-bg-light);
+    border: 1px solid var(--select-border-light);
+}
+
+.controls select:focus {
+    outline: none;
+    /* Default to dark */
+    border-color: var(--select-focus-border-dark);
+}
+
+/* Light theme override */
+body:not(.dark) .controls select:focus {
+    border-color: var(--select-focus-border-light);
+}
+
+/* Theme Switch Styles */
+.theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.theme-switch-wrapper em {
+    font-size: 0.9em;
+    font-style: normal;
+}
+
+.theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 44px; /* Slightly smaller */
+    height: 24px;
+}
+
+.theme-switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #555; /* Dark mode off background */
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #ccc; /* Dark mode on background */
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #ccc;
+}
+
+input:checked + .slider:before {
+    transform: translateX(20px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 24px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Responsive adjustments for controls visibility */
+@media (max-width: 600px) {
+    .controls {
+        flex-direction: column;
+        gap: 10px;
+        padding: 15px;
+    }
+
+    #canvas-container {
+        height: calc(100% - 0px); /* Adjust height for taller controls */
+    }
+}
+
+#app-title {
+    font-weight: bold;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; /* Explicit sans-serif */
+    font-size: 1.1em;
+    /* Optional: Add some margin if needed */
+    /* margin-right: auto; */ /* Push other items to the right if needed */
+}
+
+/* Adjust alignment for smaller screens if needed */
+@media (max-width: 700px) { /* Example breakpoint */
+    .controls {
+        justify-content: center; /* Center items on smaller screens */
+        flex-wrap: wrap; /* Allow items to wrap */
+    }
+    #app-title {
+        width: 100%; /* Make title take full width */
+        text-align: center; /* Center title text */
+        margin-bottom: 10px; /* Add space below title when wrapped */
+    }
+
+    #main-title {
+        position: absolute;
+        top: calc(50% - 70px); /* Position above the play button */
+        left: 50%;
+        transform: translateX(-50%);
+        font-weight: bold;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; /* Explicit sans-serif */
+        font-size: 1.3em; /* Adjust size as needed */
+        color: inherit; /* Inherit color from body */
+        margin: 0 0 20px 0;
+        padding: 0;
+        z-index: 20; /* Same as play button */
+        transition: opacity 1s ease;
+        opacity: 1;
+        text-align: center;
+    }
+    
+    #play-button {
+        position: absolute;
+        top: 53%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 15px 30px;
+        font-size: 1em;
+        font-weight: bold;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, opacity 0.5s ease;
+        z-index: 20; /* Ensure button is above canvas */
+        opacity: 1;
+    }
+} 

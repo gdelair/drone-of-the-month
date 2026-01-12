@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ 
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2RBDD8LMP0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-2RBDD8LMP0');
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>drone of the month</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Remove p5.js -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.js"></script> -->
+    <!-- Include Tone.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/15.0.4/Tone.js"></script>
+    <!-- Include Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body class="dark">
+    <div id="canvas-container">
+        <!-- Three.js canvas will be appended here -->
+        <h1 id="main-title">drone of the month</h1>
+        <button id="play-button">Play</button>
+    </div>
+    <div class="controls" id="track-controls" style="display: none;"> <!-- Renamed ID -->
+        <div id="app-title">drone of the month: 2025</div> <!-- Added Title -->
+        <div> <!-- Group Track select -->
+            <label for="track-select">Track:</label> 
+            <select id="track-select"> 
+                <option value="january">January</option>
+                <option value="february">February</option>
+                <option value="march">March</option>
+                <option value="april" selected>April</option>
+                <option value="may" disabled>May</option>
+                <option value="june" disabled>June</option>
+                <option value="july" disabled>July</option>
+                <option value="august" disabled>August</option>
+                <option value="september" disabled>September</option>
+                <option value="october" disabled>October</option>
+                <option value="november" disabled>November</option>
+                <option value="december" disabled>December</option>
+            </select>
+        </div>
+        <div class="theme-switch-wrapper"> <!-- Theme Toggle -->
+            <label class="theme-switch" for="theme-checkbox">
+                <input type="checkbox" id="theme-checkbox" />
+                <div class="slider round"></div>
+            </label>
+            <em>Dark Mode</em>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
